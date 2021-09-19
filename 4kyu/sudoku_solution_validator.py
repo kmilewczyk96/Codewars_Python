@@ -1,0 +1,49 @@
+def valid_solution(board):
+    for row in board:
+        repetition_check = {0}
+        repetition_check.update(row)
+        if sum(repetition_check) != 45:
+            return False
+
+    for i in range(0, 9):
+        current_values = 0
+        for row in board:
+            current_values += row[i]
+        if current_values != 45:
+            return False
+
+    for r in range(0, 9, 3):
+        for c in range(0, 9, 3):
+            square_sum = 0
+            for x in board[r: r + 3]:
+                for column in range(c, c + 3):
+                    square_sum += x[column]
+            if square_sum != 45:
+                return False
+
+    return True
+
+
+print(valid_solution([
+  [5, 3, 4, 6, 7, 8, 9, 1, 2],
+  [6, 7, 2, 1, 9, 5, 3, 4, 8],
+  [1, 9, 8, 3, 4, 2, 5, 6, 7],
+  [8, 5, 9, 7, 6, 1, 4, 2, 3],
+  [4, 2, 6, 8, 5, 3, 7, 9, 1],
+  [7, 1, 3, 9, 2, 4, 8, 5, 6],
+  [9, 6, 1, 5, 3, 7, 2, 8, 4],
+  [2, 8, 7, 4, 1, 9, 6, 3, 5],
+  [3, 4, 5, 2, 8, 6, 1, 7, 9]
+]))
+
+print(valid_solution([
+    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [2, 3, 4, 5, 6, 7, 8, 9, 1],
+    [3, 4, 5, 6, 7, 8, 9, 1, 2],
+    [4, 5, 6, 7, 8, 9, 1, 2, 3],
+    [5, 6, 7, 8, 9, 1, 2, 3, 4],
+    [6, 7, 8, 9, 1, 2, 3, 4, 5],
+    [7, 8, 9, 1, 2, 3, 4, 5, 6],
+    [8, 9, 1, 2, 3, 4, 5, 6, 7],
+    [9, 1, 2, 3, 4, 5, 6, 7, 8]
+]))
