@@ -32,9 +32,7 @@
 # r => a-f-k-p-q-r-OK = 6
 # s => r-s-OK = 2
 # Answer = 3 + 5 + 4 + 2 + 7 + 7 + 6 + 2 = 36
-#
 ########################################################################################################################
-
 def tv_remote(word):
     layout = ['a', 'b', 'c', 'd', 'e', '1', '2', '3',
               'f', 'g', 'h', 'i', 'j', '4', '5', '6',
@@ -54,4 +52,5 @@ def tv_remote(word):
     return actions
 
 
-tv_remote('codewars')
+if __name__ == '__main__':
+    print(tv_remote('codewars'))

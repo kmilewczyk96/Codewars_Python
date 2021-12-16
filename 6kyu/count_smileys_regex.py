@@ -12,23 +12,11 @@
 # Valid smiley face examples: :) :D ;-D :~)
 # Invalid smiley faces: ;( :> :} :]
 ########################################################################################################################
+from re import findall
+
+
 def count_smileys(arr):
-    count = 0
-    eyes = [':', ';']
-    nose = ['-', '~']
-    mouth = [')', 'D']
-
-    for face in arr:
-        if len(face) == 2:
-            if face[0] in eyes and face[1] in mouth:
-                count += 1
-        elif len(face) == 3:
-            if face[0] in eyes and face[1] in nose and face[2] in mouth:
-                count += 1
-        else:
-            pass
-
-    return count
+    return len(list(findall(r"[:;][-~]?[)D]", " ".join(arr))))
 
 
 if __name__ == '__main__':

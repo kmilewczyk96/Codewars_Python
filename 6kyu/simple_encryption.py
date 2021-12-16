@@ -1,5 +1,4 @@
 ########################################################################################################################
-#
 # Implement a pseudo-encryption algorithm which given a string S
 # and an integer N concatenates all the odd-indexed characters of S
 # with all the even-indexed characters of S, this process should be repeated N times.
@@ -16,10 +15,7 @@
 #
 # Together with the encryption function, you should also implement a decryption function which reverses the process.
 # If the string S is an empty value or the integer N is not positive, return the first argument without changes.
-#
 ########################################################################################################################
-
-
 def decrypt(encrypted_text, n):
     while n > 0:
         position = 1
@@ -54,5 +50,6 @@ def encrypt(text, n):
     return text
 
 
-print(encrypt('0123456', 1))
-print(decrypt(encrypt('0123456', 1), 1))
+if __name__ == '__main__':
+    print(encrypt('0123456', 1))
+    print(decrypt(encrypt('0123456', 1), 1))

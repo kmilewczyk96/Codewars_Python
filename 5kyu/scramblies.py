@@ -12,7 +12,6 @@
 # scramble('cedewaraaossoqqyt', 'codewars') ==> True
 # scramble('katas', 'steak') ==> False
 ########################################################################################################################
-########################################################################################################################
 from collections import Counter
 
 
@@ -27,7 +26,8 @@ def scramble(s1, s2):
     return True
 
 
-print(scramble('oneplustwo', 'nest'))
-print(scramble('rkqodlw', 'world'))
-print(scramble('cedewaraaossoqqyt', 'codewars'))
-print(scramble('katas', 'steak'))
+if __name__ == '__main__':
+    print(scramble('oneplustwo', 'nest'))
+    print(scramble('rkqodlw', 'world'))
+    print(scramble('cedewaraaossoqqyt', 'codewars'))
+    print(scramble('katas', 'steak'))

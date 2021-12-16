@@ -31,7 +31,7 @@ class PokerHand(object):
 
     def __init__(self, hand: str):
         self.hand = hand.split()
-        self.values = {
+        self.alpha_values = {
             "T": 10,
             "J": 11,
             "Q": 12,
@@ -51,9 +51,82 @@ class PokerHand(object):
             "NONE": 0
         }
 
+    def get_hand(self):
+        return self.hand
+
+    def get_value(self, card: str):
+        return self.alpha_values.get(card[0])
+
+    def hand_values(self):
+        values = []
+        for card in self.get_hand():
+            if card[0].isnumeric():
+                values.append(int(card[0]))
+            else:
+                values.append(self.get_value(card))
+
+        values.sort(reverse=True)
+        return values
+
+    def hand_colors(self):
+        colors = set()
+        for card in self.get_hand():
+            colors.add(card[1])
+
+        return colors
+
+    def check_for_sequence(self):
+        for i in range(4):
+            if self.hand_values()[i + 1] != self.hand_values()[i] - 1:
+                return False
+
+        return True
+
+    def check_suit(self):
+        if len(self.hand_colors()) != 1:
+            return False
+
+        return True
+
+    def check_for_repetition(self):
+        repetitions = Counter(self.hand_values())
+        return [i for i in sorted(repetitions.values()) if i != 1]
+
+    def check_hand(self):
+        if self.check_suit():
+            if self.check_for_sequence():
+                if self.hand_values()[0] == 14:
+                    return "ROYAL_FLUSH"
+
+                return "STRAIGHT_FLUSH"
+
+            return "FLUSH"
+
+        else:
+            if self.check_for_sequence():
+                return "STRAIGHT"
+
+            else:
+                if self.check_for_repetition() == [4]:
+                    return "FOUR_OF_A_KIND"
+                elif self.check_for_repetition() == [2, 3]:
+                    return "FULL_HOUSE"
+                elif self.check_for_repetition() == [3]:
+                    return "THREE_OF_A_KIND"
+                elif self.check_for_repetition() == [2, 2]:
+                    return "TWO_PAIR"
+                elif self.check_for_repetition() == [2]:
+                    return "PAIR"
+
+                return "NONE"
+
+    def tie_solver(self):
+        ordered = Counter(self.hand_values())
+        return [i[0] for i in ordered.most_common()]
+
     def compare_with(self, other):
-        result = self.hands_rank.get(self.check_hand(self.hand)) - \
-                 self.hands_rank.get(self.check_hand(other.get_hand()))
+        result = self.hands_rank.get(self.check_hand()) - \
+                 self.hands_rank.get(other.check_hand())
 
         if result > 0:
             return self.RESULT[2]
@@ -62,107 +135,17 @@ class PokerHand(object):
             return self.RESULT[0]
 
         else:
-            values_hand = self.tie_solver(self.hand_values(self.get_hand()))
-            values_other = self.tie_solver(self.hand_values(other.get_hand()))
-
-            for i in range(len(values_hand)):
-                if values_hand[i] > values_other[i]:
+            for i in range(len(self.tie_solver())):
+                if self.tie_solver()[i] > other.tie_solver()[i]:
                     return self.RESULT[2]
-                elif values_hand[i] < values_other[i]:
+                elif self.tie_solver()[i] < other.tie_solver()[i]:
                     return self.RESULT[0]
-                else:
-                    pass
 
             return self.RESULT[1]
-
-    def check_hand(self, hand):
-        values = self.hand_values(hand)
-        colors = self.hand_colors(hand)
-
-        if self.check_suit(colors):
-            if self.check_for_sequence(values):
-                if values[0] == 14:
-                    return "ROYAL_FLUSH"
-
-                return "STRAIGHT_FLUSH"
-
-            return "FLUSH"
-
-        else:
-            if self.check_for_sequence(values):
-                return "STRAIGHT"
-
-            else:
-                repetitions = self.check_for_repetition(values)
-
-                if repetitions == [4]:
-                    return "FOUR_OF_A_KIND"
-                elif repetitions == [2, 3]:
-                    return "FULL_HOUSE"
-                elif repetitions == [3]:
-                    return "THREE_OF_A_KIND"
-                elif repetitions == [2, 2]:
-                    return "TWO_PAIR"
-                elif repetitions == [2]:
-                    return "PAIR"
-
-                return "NONE"
-
-    def get_hand(self):
-        return self.hand
-
-    def get_value(self, card: str):
-        return self.values.get(card[0])
-
-    def hand_values(self, hand: list):
-        list_v = []
-        for card in hand:
-            if card[0].isnumeric():
-                list_v.append(int(card[0]))
-            else:
-                list_v.append(self.get_value(card))
-
-        list_v.sort(reverse=True)
-        return list_v
-
-    @staticmethod
-    def hand_colors(hand: list):
-        set_col = set()
-        for card in hand:
-            set_col.add(card[1])
-
-        return set_col
-
-    @staticmethod
-    def check_suit(colors: set):
-        if len(colors) != 1:
-            return False
-
-        return True
-
-    @staticmethod
-    def check_for_sequence(values: list):
-        for i in range(4):
-            if values[i + 1] != values[i] - 1:
-                return False
-
-        return True
-
-    @staticmethod
-    def check_for_repetition(values: list):
-        repetitions = Counter(values)
-        return [i for i in sorted(repetitions.values()) if i != 1]
-
-    @staticmethod
-    def tie_solver(values: list):
-        ordered = Counter(values)
-        return [i[0] for i in ordered.most_common()]
 
 
 if __name__ == '__main__':
     player = PokerHand('2S 3S 4S 5S 6S')
     opponent = PokerHand('TS JS JD 5C 5C')
 
-    print(player.check_hand(player.get_hand()))
-    print(opponent.check_hand(opponent.get_hand()))
     print(player.compare_with(opponent))

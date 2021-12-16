@@ -49,4 +49,5 @@ def next_bigger(n):
     return -1
 
 
-print(next_bigger(122995))
+if __name__ == '__main__':
+    print(next_bigger(122995))

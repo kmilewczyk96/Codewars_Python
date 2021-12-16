@@ -28,10 +28,10 @@
 # song_decoder("WUBWEWUBAREWUBWUBTHEWUBCHAMPIONSWUBMYWUBFRIENDWUB")
 #   # =>  WE ARE THE CHAMPIONS MY FRIEND
 ########################################################################################################################
-
 def song_decoder(song):
     words = song.split('WUB')
     return ' '.join([word for word in words if word != ''])
 
 
-print(song_decoder('WUBWUBTHISWUBWUBKATAWUBWUBWASWUBWUBWUBWUBAWUBWUBTIMEWUBWUBWASTEWUBWUB'))
+if __name__ == '__main__':
+    print(song_decoder('WUBWUBTHISWUBWUBKATAWUBWUBWASWUBWUBWUBWUBAWUBWUBTIMEWUBWUBWASTEWUBWUB'))
